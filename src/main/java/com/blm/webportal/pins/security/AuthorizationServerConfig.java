@@ -24,6 +24,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	
 	@Autowired
 	private AuthenticationManager authManager;
+	
+	@Autowired
+	private InfoAditionalToken infoAditionalToken;
 
 	@Override
 	public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
@@ -42,9 +45,12 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
 	@Override
 	public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
+		TokenEnhancerChain token = new TokenEnhancerChain(); 
+		token.setTokenEnhancers(Arrays.asList(infoAditionalToken, AccessTokenConverter1()));
 		endpoints.authenticationManager(authManager)
 			.tokenStore(tokenStore1())
-			.accessTokenConverter(AccessTokenConverter1());
+			.accessTokenConverter(AccessTokenConverter1())
+			.tokenEnhancer(token);
 	}
 	
 	@Bean
