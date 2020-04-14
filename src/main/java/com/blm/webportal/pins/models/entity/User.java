@@ -41,7 +41,7 @@ public class User implements Serializable{
 	private String mail;
 	
 	@OneToOne(cascade = CascadeType.MERGE)
-	@JoinTable(name="usuarios_roles", 
+	@JoinTable(name="usuariosRoles", 
 	joinColumns= @JoinColumn(name="user_id"), 
 	inverseJoinColumns=@JoinColumn(name="role_id"),
 	uniqueConstraints= {@UniqueConstraint(columnNames= {"user_id","role_id"})})

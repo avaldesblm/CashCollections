@@ -11,9 +11,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import com.blm.webportal.pins.aop.Trace;
 import com.blm.webportal.pins.clients.UserFeignClient;
-
-import feign.FeignException;
 
 @Service
 public class UserService implements IUsuarioService, UserDetailsService{
@@ -24,6 +23,7 @@ public class UserService implements IUsuarioService, UserDetailsService{
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
 	
+	@Trace
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		
@@ -75,4 +75,5 @@ public class UserService implements IUsuarioService, UserDetailsService{
 			throw new UsernameNotFoundException("Error en el login, no existe el usuario");
 		} 
 	}
+
 }

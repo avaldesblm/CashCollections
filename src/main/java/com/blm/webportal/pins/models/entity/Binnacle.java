@@ -2,6 +2,8 @@ package com.blm.webportal.pins.models.entity;
 
 import java.math.BigDecimal;
 import java.util.Date;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -26,6 +28,41 @@ public class Binnacle {
 	private String bimbo_code;
 	private BigDecimal amount;
 	private int status;
+	
+	@Column(length = 150)
+	private String ip;
+	@Column(length = 150)
+	private String method;
+	@Column(length = 150)
+	private String url;
+	@Column(length = 4000)
+	private String rspDescription;
+	
+	public String getRspDescription() {
+		return rspDescription;
+	}
+	public void setRspDescription(String rspDescription) {
+		this.rspDescription = rspDescription;
+	}
+	public String getMethod() {
+		return method;
+	}
+	public void setMethod(String method) {
+		this.method = method;
+	}
+	
+	public String getIp() {
+		return ip;
+	}
+	public void setIp(String ip) {
+		this.ip = ip;
+	}
+	public String getUrl() {
+		return url;
+	}
+	public void setUrl(String url) {
+		this.url = url;
+	}
 	
 	public Long getId() {
 		return id;

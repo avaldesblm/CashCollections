@@ -1,10 +1,11 @@
 package com.blm.webportal.pins.models.entity.service;
 
-import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.blm.webportal.pins.aop.Trace;
 import com.blm.webportal.pins.models.entity.Binnacle;
 import com.blm.webportal.pins.models.entity.repository.BinnacleRepository;
 
@@ -25,31 +26,8 @@ public class BinnacleServiceImpl implements IBinnacleService{
 	public Binnacle findById(Long id) {
 		return binnacleDao.findById(id).orElse(null);
 	}
-	/*
-	@Override
-	public List<Binnacle> findByCeve(String ceve) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Binnacle> findByRequest_date(Date request_date) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Binnacle> findByBimbo_code(String bimbo_code) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Binnacle> findByRoute(String route) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	*/
+	
+	@Trace
 	@Override
 	@Transactional
 	public Binnacle save(Binnacle ceve) {

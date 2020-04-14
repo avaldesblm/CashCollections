@@ -13,10 +13,13 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.R
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
+import org.springframework.security.web.access.channel.ChannelProcessingFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableResourceServer
@@ -30,27 +33,59 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter{
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-		.antMatchers(HttpMethod.GET, "/oauth/token").permitAll()
-		//.antMatchers(HttpMethod.GET, "/ceves/get/{id}").permitAll()
-		.antMatchers(HttpMethod.PUT, "/ceves/edit/{id}").permitAll()
-		.antMatchers(HttpMethod.POST, "/auth/login").permitAll()
-		//.antMatchers(HttpMethod.POST, "/binnacle/create").permitAll()
-		.antMatchers(HttpMethod.GET, "/users/search/findByUsername").permitAll()
-		//.antMatchers(HttpMethod.GET, "/binnacle/**").hasRole("AUDIT")
-		//.antMatchers(HttpMethod.GET, "/ceves/getAll").hasRole("ADMIN")
-		.antMatchers(HttpMethod.GET, "/binnacle/**").hasRole("AUDIT")
-		.antMatchers(HttpMethod.GET, "/ceves/getAll").hasRole("ADMIN")
+		.antMatchers(HttpMethod.GET, "/api/ceves/getAll").permitAll()
+		.antMatchers(HttpMethod.GET, "/api/ceves/get/{id}").permitAll()
+		.antMatchers(HttpMethod.PUT, "/api/ceves/edit/{id}").permitAll()//hasRole("CEVE")
+		
+		.antMatchers(HttpMethod.GET, "/api/binnacle/getAll").hasRole("ADMIN")
+		.antMatchers(HttpMethod.GET, "/api/binnacle/get/{id}").hasRole("ADMIN")
+		.antMatchers(HttpMethod.GET, "/api/binnacle/create").hasAnyRole("ADMIN","CEVE")
+		
+		//.antMatchers(HttpMethod.GET, "/users/search/**").denyAll()
 		.antMatchers(HttpMethod.GET, "/users/search/findByMail").permitAll()
-		.antMatchers(HttpMethod.GET, "/users/**").permitAll()
-		.antMatchers(HttpMethod.GET, "/ceves/get/{id}").hasRole("CEVE")
+		
+		.antMatchers(HttpMethod.GET, "/oauth/token").permitAll()
+		
 		.anyRequest().authenticated()
-		.and().cors().configurationSource(configurationSource());
+		//.and().cors().configurationSource(configurationSource())
+		;
+		/*
+		CorsConfigurationSource source = corsConfigurationSource();
+		http.addFilterBefore(new CorsFilter(source), ChannelProcessingFilter.class);
+		*/
+		
 	}
 	
+	/*
+	@Bean
+	public CorsConfigurationSource corsConfigurationSource() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration config = new CorsConfiguration();
+        config.addAllowedOrigin("http://localhost:4200");
+        config.addAllowedHeader("*");
+        config.addAllowedMethod("POST");
+        config.addAllowedMethod("GET");
+        config.addAllowedMethod("PUT");
+        config.addAllowedMethod("OPTIONS");
+        //more config
+        source.registerCorsConfiguration("/**", config);
+        return source;
+    }
+	
+	@Bean
+	public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**").allowedOrigins("http://localhost:4200").allowedMethods("GET", "POST","PUT", "DELETE");
+            }
+        };
+    }
+	/*
 	@Bean
 	public CorsConfigurationSource configurationSource() {
 		CorsConfiguration cors = new CorsConfiguration();
-		cors.setAllowedOrigins(Arrays.asList("*"));
+		cors.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
 		cors.setAllowedMethods(Arrays.asList("POST","GET","PUT","OPTIONS"));
 		cors.setAllowCredentials(true);
 		cors.setAllowedHeaders(Arrays.asList("Authorization","Content-Type"));
@@ -65,6 +100,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter{
 		bean.setOrder(Ordered.HIGHEST_PRECEDENCE);
 		return bean;
 	}
+	*/
 
 	@Bean
 	public JwtTokenStore tokenStore() {
