@@ -31,8 +31,9 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter{
 	public void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
 		.antMatchers(HttpMethod.GET, "/oauth/token").permitAll()
-		.antMatchers(HttpMethod.GET, "/ceves/get/{id}").permitAll()
+		//.antMatchers(HttpMethod.GET, "/ceves/get/{id}").permitAll()
 		.antMatchers(HttpMethod.PUT, "/ceves/edit/{id}").permitAll()
+		.antMatchers(HttpMethod.POST, "/auth/login").permitAll()
 		//.antMatchers(HttpMethod.POST, "/binnacle/create").permitAll()
 		.antMatchers(HttpMethod.GET, "/users/search/findByUsername").permitAll()
 		//.antMatchers(HttpMethod.GET, "/binnacle/**").hasRole("AUDIT")
@@ -40,8 +41,10 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter{
 		.antMatchers(HttpMethod.GET, "/binnacle/**").hasRole("AUDIT")
 		.antMatchers(HttpMethod.GET, "/ceves/getAll").hasRole("ADMIN")
 		.antMatchers(HttpMethod.GET, "/users/search/findByMail").permitAll()
-		.anyRequest().authenticated();
-		//.and().cors().configurationSource(configurationSource());
+		.antMatchers(HttpMethod.GET, "/users/**").permitAll()
+		.antMatchers(HttpMethod.GET, "/ceves/get/{id}").hasRole("CEVE")
+		.anyRequest().authenticated()
+		.and().cors().configurationSource(configurationSource());
 	}
 	
 	@Bean
@@ -50,7 +53,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter{
 		cors.setAllowedOrigins(Arrays.asList("*"));
 		cors.setAllowedMethods(Arrays.asList("POST","GET","PUT","OPTIONS"));
 		cors.setAllowCredentials(true);
-		cors.setAllowedHeaders(Arrays.asList("Authorization","Content-TypeT"));
+		cors.setAllowedHeaders(Arrays.asList("Authorization","Content-Type"));
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		source.registerCorsConfiguration("/**", cors);
 		return source;

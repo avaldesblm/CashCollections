@@ -11,4 +11,7 @@ public interface UserFeignClient {
 	@GetMapping("users/search/findByUsername")
 	public User findByUsername(@RequestParam String username);
 	
+	@GetMapping("users/search/findByMail")
+	public User findByMail(@RequestParam String mail);
+	
 }
