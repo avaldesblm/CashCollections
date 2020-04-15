@@ -50,10 +50,10 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter{
 		//.antMatchers(HttpMethod.GET, "/users/search/**").denyAll()
 		.antMatchers(HttpMethod.GET, "/users/search/findByMail").permitAll()
 		
-		.antMatchers(HttpMethod.GET, "/oauth/token").permitAll()
+		.antMatchers(HttpMethod.GET, "/api/oauth/token").permitAll()
 		
 		.anyRequest().authenticated()
-		//.and().cors().configurationSource(configurationSource())
+		.and().cors().configurationSource(configurationSource())
 		;
 		/*
 		CorsConfigurationSource source = corsConfigurationSource();
@@ -87,11 +87,11 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter{
             }
         };
     }
-	/*
+	*/
 	@Bean
 	public CorsConfigurationSource configurationSource() {
 		CorsConfiguration cors = new CorsConfiguration();
-		cors.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
+		cors.setAllowedOrigins(Arrays.asList("*"));
 		cors.setAllowedMethods(Arrays.asList("POST","GET","PUT","OPTIONS"));
 		cors.setAllowCredentials(true);
 		cors.setAllowedHeaders(Arrays.asList("Authorization","Content-Type"));
@@ -106,7 +106,6 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter{
 		bean.setOrder(Ordered.HIGHEST_PRECEDENCE);
 		return bean;
 	}
-	*/
 
 	@Bean
 	public JwtTokenStore tokenStore() {

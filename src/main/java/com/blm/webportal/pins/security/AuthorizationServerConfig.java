@@ -51,6 +51,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 			.tokenStore(tokenStore1())
 			.accessTokenConverter(AccessTokenConverter1())
 			.tokenEnhancer(token);
+		endpoints.pathMapping("/oauth/token", "/api/oauth/token");
 	}
 	
 	@Bean
