@@ -41,6 +41,12 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter{
 		.antMatchers(HttpMethod.GET, "/api/binnacle/get/{id}").hasRole("ADMIN")
 		.antMatchers(HttpMethod.GET, "/api/binnacle/create").hasAnyRole("ADMIN","CEVE")
 		
+		.antMatchers(HttpMethod.GET, "/api/reasons/getAll").hasRole("OPS")
+		.antMatchers(HttpMethod.GET, "/api/reasons/get/{id}").hasRole("OPS")
+		.antMatchers(HttpMethod.PUT, "/api/reasons/edit/{id}").hasAnyRole("OPS")
+		.antMatchers(HttpMethod.GET, "/api/reasons/getAllActive").hasAnyRole("OPS")
+		.antMatchers(HttpMethod.POST, "/api/reasons/create").hasAnyRole("OPS")
+		
 		//.antMatchers(HttpMethod.GET, "/users/search/**").denyAll()
 		.antMatchers(HttpMethod.GET, "/users/search/findByMail").permitAll()
 		
